@@ -6,6 +6,9 @@ import random
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
+
+
+"""
 class tc_devices(models.Model):
     _name = "tc_devices"
     _description = 'Traccar devices'
@@ -24,6 +27,10 @@ class tc_devices(models.Model):
     def write(self,vals):
         vals                        =self.__SAVE(vals)
         return super(tc_devices, self).write(vals)
+"""
+
+
+
 class positions(models.Model):
     _inherit = "gpsmap.positions"
     
