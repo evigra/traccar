@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
 
-
 """
 class tc_devices(models.Model):
     _name = "tc_devices"
@@ -84,14 +83,10 @@ class positions(models.Model):
         positions                   =self.env.cr.dictfetchall()
         
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
-        for position in positions:  
-        
-        
-        
-        
-        
-                  
+        for position in positions:                    
             self.create(position)
+            
+            
 class vehicle(models.Model):
     _inherit = "fleet.vehicle"    
 
