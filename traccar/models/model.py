@@ -40,8 +40,7 @@ class positions(models.Model):
         self.env.cr.execute("ALTER TABLE public.tc_positions ALTER COLUMN read SET DEFAULT 0;")
     #"""
     def run_scheduler_get_position2(self):
-    
-        print('=============== CREATE POSITIONS ===================')                        
+            
         vehicle_obj                             =self.env['fleet.vehicle']
 
         devices                     ={}
@@ -84,10 +83,11 @@ class positions(models.Model):
         """)
         positions                   =self.env.cr.dictfetchall()
         
+        print('=============== CREATE POSITIONS ===================',len(positions))                                
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                    
             self.create(position)
-            print(position)                        
+                          
             
             
             
