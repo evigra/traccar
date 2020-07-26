@@ -40,7 +40,7 @@ class positions(models.Model):
         self.env.cr.execute("ALTER TABLE public.tc_positions ALTER COLUMN read SET DEFAULT 0;")
     #"""
     def run_scheduler_get_position2(self):
-            
+    
         vehicle_obj                             =self.env['fleet.vehicle']
 
         devices                     ={}
@@ -87,13 +87,20 @@ class positions(models.Model):
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                    
             self.create(position)
-                          
+                                   
+        
+            vehicle_args                            =[('id','=',position.deviceid)]                        
+            vehicle_data                            =vehicle_obj.search(vehicle_args, offset=0, limit=None, order=None)
+            
+            print('==================',vehicle_data)
+            
+                                      
             
             
             
 class vehicle(models.Model):
     _inherit = "fleet.vehicle"    
-
+    devicetime                                  = fields.Datetime('Device Time')
     def __SAVE(self,datas):           
         vals                            =datas["new"]
 
