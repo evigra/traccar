@@ -88,12 +88,12 @@ class positions(models.Model):
         for position in positions:                    
             self.create(position)
                                    
-        
+            """
             vehicle_args                            =[('id','=',position.deviceid)]                        
             vehicle_data                            =vehicle_obj.search(vehicle_args, offset=0, limit=None, order=None)
             
             print('==================',vehicle_data)
-            
+            """
                                       
             
             
