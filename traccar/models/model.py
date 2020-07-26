@@ -88,7 +88,7 @@ class positions(models.Model):
         for position in positions:                    
             self.create(position)
             #vehicle_data=vehicle_obj.browse(position.deviceid)                       
-            print('==================',vehicle_data)
+            #print('==================',vehicle_data)
             
                                       
             
