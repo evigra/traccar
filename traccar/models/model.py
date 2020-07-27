@@ -87,9 +87,9 @@ class positions(models.Model):
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                    
             self.create(position)
-            vehicle_data=vehicle_obj.browse(position["deviceid"])                       
-            vehicle_data.devicetime=position["devicetime"]
-            vehicle_obj.write(vehicle_data)
+            #vehicle_data=vehicle_obj.browse(position["deviceid"])                       
+            #vehicle_data.devicetime=position["devicetime"]
+            #vehicle_obj.write(vehicle_data)
             
                                       
             
