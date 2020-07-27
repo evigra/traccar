@@ -86,7 +86,6 @@ class positions(models.Model):
         print('=============== CREATE POSITIONS ===================',len(positions))                                
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                    
-            print('===deviceid===', position["deviceid"])                                
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             vehicle_data.devicetime     =position["devicetime"]
@@ -141,9 +140,7 @@ class vehicle(models.Model):
             
             self.env.cr.execute("SELECT * FROM tc_devices WHERE uniqueid='%s'" %(self.imei))        
             devices_data                    =self.env.cr.dictfetchall()
-            print('=== write pasa ===', devices_data)    
             if len(devices_data)>0:
-                
                 datas["method"]     ="write"
                 datas["old"]        =devices_data[0]         
 
