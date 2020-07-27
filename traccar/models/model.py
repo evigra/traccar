@@ -142,10 +142,10 @@ class vehicle(models.Model):
             datas                   ={}
             datas["method"]         ="create"
             datas["new"]            =vals
-
-            print('=== write pasa ===', datas)    
+            
             self.env.cr.execute("SELECT * FROM tc_devices WHERE uniqueid='%s'" %(self.imei))        
             devices_data                    =self.env.cr.dictfetchall()
+            print('=== write pasa ===', devices_data)    
             if len(devices_data)>0:
                 print('=== write ===', devices_data)
                 datas["method"]     ="write"
