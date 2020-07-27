@@ -146,6 +146,7 @@ class vehicle(models.Model):
             self.env.cr.execute("SELECT * FROM tc_devices WHERE uniqueid='%s'" %(self.imei))        
             devices_data                    =self.env.cr.dictfetchall()
             if len(devices_data)>0:
+                print('=== write ===', devices_data)
                 datas["method"]     ="write"
                 datas["old"]        =devices_data[0]         
 
