@@ -90,7 +90,7 @@ class positions(models.Model):
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             vehicle_data.devicetime     =position["devicetime"]
-            vehicle_obj.write(vehicle_data)
+            #vehicle_obj.write(vehicle_data)
             
                                       
             
