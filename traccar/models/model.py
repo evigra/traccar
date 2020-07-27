@@ -88,8 +88,8 @@ class positions(models.Model):
         for position in positions:                    
             self.create(position)
             vehicle_data=vehicle_obj.browse(position["deviceid"])                       
-            print('==================')
-            print(vehicle_data)
+            vehicle_data.devicetime=position["devicetime"]
+            vehicle_obj.write(vehicle_data)
             
                                       
             
