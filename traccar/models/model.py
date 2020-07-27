@@ -90,10 +90,7 @@ class positions(models.Model):
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             vehicle_data.devicetime     =position["devicetime"]
-            #vehicle_obj.write(vehicle_data)
-            
-                                      
-            
+            vehicle_obj.write(vehicle_data)
             
             
 class vehicle(models.Model):
@@ -146,9 +143,10 @@ class vehicle(models.Model):
             devices_data                    =self.env.cr.dictfetchall()
             print('=== write pasa ===', devices_data)    
             if len(devices_data)>0:
-                print('=== write ===', devices_data)
+                
                 datas["method"]     ="write"
                 datas["old"]        =devices_data[0]         
 
+            print('=== write ===',datas)
             self.__SAVE(datas)                        
         return super(vehicle, self).write(vals)
