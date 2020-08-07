@@ -73,7 +73,7 @@ class positions(models.Model):
 
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
-        positions                   =self.env.cr.dictfetchall()
+        #positions                   =self.env.cr.dictfetchall()
       
             
 class vehicle(models.Model):
@@ -118,6 +118,8 @@ class vehicle(models.Model):
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:
+            print('=== write ===',datas)
+                    
             if('devicetime' not in vals ):
                 datas                   ={}
                 datas["method"]         ="create"
@@ -128,7 +130,5 @@ class vehicle(models.Model):
                 if len(devices_data)>0:
                     datas["method"]     ="write"
                     datas["old"]        =devices_data[0]         
-
-                print('=== write ===',datas)
-            self.__SAVE(datas)                        
+                self.__SAVE(datas)                        
         return super(vehicle, self).write(vals)
