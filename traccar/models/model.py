@@ -42,27 +42,7 @@ class positions(models.Model):
     def run_scheduler_get_position2(self):
     
         vehicle_obj                             =self.env['fleet.vehicle']
-
         devices                     ={}
-        """
-            SELECT 
-	            CASE 				            
-		            WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-		            WHEN tp.attributes::json->>'motion'='false' THEN 'deviceStopped'
-		            WHEN tp.attributes::json->>'motion'='true' THEN 'deviceOnline'
-		            ELSE te.type
-	            END	
-                as status,            
-                tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
-                tp.altitude,tp.speed,tp.course,tp.address,tp.attributes
-            FROM tc_positions tp 
-                JOIN tc_devices td ON tp.deviceid=td.id 
-                JOIN fleet_vehicle fv ON fv.imei=td.uniqueid
-                LEFT JOIN tc_events te ON te.deviceid=td.id AND te.positionid=tp.id
-            WHERE tp.read=0 
-            ORDER BY tp.devicetime DESC 
-        """
-
 
         self.env.cr.execute("""
             SELECT 
@@ -89,8 +69,12 @@ class positions(models.Model):
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             vehicle_data.devicetime     =position["devicetime"]
-            #vehicle_obj.write(vehicle_data)
-            
+            vehicle_obj.write(vehicle_data)
+
+    def run_scheduler_table_lock(self):
+        self.env.cr.execute("DELETE FROM databasechangeloglock")
+        positions                   =self.env.cr.dictfetchall()
+      
             
 class vehicle(models.Model):
     _inherit = "fleet.vehicle"    
@@ -134,16 +118,17 @@ class vehicle(models.Model):
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:
-            datas                   ={}
-            datas["method"]         ="create"
-            datas["new"]            =vals
-            
-            self.env.cr.execute("SELECT * FROM tc_devices WHERE uniqueid='%s'" %(self.imei))        
-            devices_data                    =self.env.cr.dictfetchall()
-            if len(devices_data)>0:
-                datas["method"]     ="write"
-                datas["old"]        =devices_data[0]         
+            if('devicetime' not in vals ):
+                datas                   ={}
+                datas["method"]         ="create"
+                datas["new"]            =vals
+                
+                self.env.cr.execute("SELECT * FROM tc_devices WHERE uniqueid='%s'" %(self.imei))        
+                devices_data                    =self.env.cr.dictfetchall()
+                if len(devices_data)>0:
+                    datas["method"]     ="write"
+                    datas["old"]        =devices_data[0]         
 
-            print('=== write ===',datas)
+                print('=== write ===',datas)
             self.__SAVE(datas)                        
         return super(vehicle, self).write(vals)
