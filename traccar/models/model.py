@@ -118,10 +118,11 @@ class vehicle(models.Model):
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:
-            print('=== write ===',datas)
+            
                     
             if('devicetime' not in vals ):
                 datas                   ={}
+                print('=== write ===',datas)
                 datas["method"]         ="create"
                 datas["new"]            =vals
                 
