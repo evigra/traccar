@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- GEOFENCE -->
+    <record id="view_traccar_vehicle_form_inherit" model="ir.ui.view">
+        <field name="name">gpsmap.vehicle.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='temporal_id']" position="after">            
+                <field name="devicetime"/>                    
+            </xpath>        
+        </field>
+    </record>        
+
+    
+    
+<!--
+            <xpath expr="//group/field[@name='temporal_id']" position="after">            
+                <field name="recargado" groups="gpsmap.gpsmap_group_god"/>                    
+            </xpath>                            
+
+    <record id="gpsmap_fleet_vehicle_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">gpsmap.fleet.vehicle.kanban_inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban"/>
+        <field name="arch" type="xml">               
+            <xpath expr="//templates/t/div/div/ul/li/field[@name='license_plate']" position="after">            
+                <field name="company_id" groups="gpsmap.gpsmap_group_manager"/>                    
+            </xpath>                
+        </field>
+    </record> 
+-->    
+    
+    
+</odoo>
+
+
+
+
+
+
+
+
