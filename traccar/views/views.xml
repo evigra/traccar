@@ -3,11 +3,11 @@
 
     <!-- GEOFENCE -->
     <record id="view_traccar_vehicle_form_inherit" model="ir.ui.view">
-        <field name="name">gpsmap.vehicle.form</field>
+        <field name="name">traccar.vehicle.form</field>
         <field name="model">fleet.vehicle</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group/field[@name='temporal_id']" position="before">            
+            <xpath expr="//group/field[@name='temporal_id']" position="after">            
                 <field name="devicetime"/>                   
             </xpath>                    
         </field>
