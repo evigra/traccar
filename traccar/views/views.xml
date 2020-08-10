@@ -7,7 +7,7 @@
         <field name="model">fleet.vehicle</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group/field[@name='temporal_id']" position="after">            
+            <xpath expr="//group/field[@name='speed']" position="after">            
                 <field name="devicetime"/>                   
             </xpath>                    
         </field>
