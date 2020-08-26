@@ -117,7 +117,6 @@ class vehicle(models.Model):
         if len(vals)>0:                                
             if('devicetime' not in vals ):
                 datas                   ={}
-                print('=== write ===',datas)
                 datas["method"]         ="create"
                 datas["new"]            =vals
                 
