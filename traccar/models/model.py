@@ -76,7 +76,7 @@ class positions(models.Model):
       
 class vehicle(models.Model):
     _inherit = "fleet.vehicle"    
-    devicetime                                  = fields.Datetime('Device Time')
+    
     def __SAVE(self,datas):           
         vals                            =datas["new"]
 

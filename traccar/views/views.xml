@@ -2,18 +2,10 @@
 <odoo>
 
     <!-- GEOFENCE -->
-    <record id="view_traccar_vehicle_form_inherit" model="ir.ui.view">
-        <field name="name">traccar.vehicle.form</field>
-        <field name="model">fleet.vehicle</field>
-        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//group" position="after">            
-                <field name="devicetime" groups="gpsmap.gpsmap_group_admin"/>                    
-            </xpath>        
-        </field>
-    </record>       
     
 <!--
+    <field name="devicetime" groups="gpsmap.gpsmap_group_admin"/>                    
+
             <xpath expr="//group/field[@name='temporal_id']" position="after">            
                 <field name="recargado" groups="gpsmap.gpsmap_group_god"/>                    
             </xpath>                            
