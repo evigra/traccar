@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group" position="after">            
-                <field name="devicetime" groups="gpsmap.gpsmap_group_manager"/>                    
+                <field name="devicetime" groups="gpsmap.gpsmap_group_admin"/>                    
             </xpath>        
         </field>
     </record>       
