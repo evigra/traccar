@@ -79,7 +79,7 @@ class positions(models.Model):
             tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc            
             
             
-            fecha1=tz.localize(fields.Datetime.from_string(fecha)).astimezone(pytz.utc)
+            fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
             
             print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1)                                
 
