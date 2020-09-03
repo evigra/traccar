@@ -77,9 +77,11 @@ class positions(models.Model):
             fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))
             
             tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc            
-            fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
             
-            print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1,' ## ', tz)                                
+            
+            fecha1=tz.localize(fields.Datetime.from_string(fecha)).astimezone(pytz.utc)
+            
+            print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1)                                
 
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
