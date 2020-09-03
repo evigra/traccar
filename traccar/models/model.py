@@ -71,7 +71,10 @@ class positions(models.Model):
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             vehicle_data.devicetime     =position["devicetime"]
             vehicle_obj.write(vehicle_data)
-            print('=============== ==============',position["devicetime"],' ## ', position["devicetime"])                                
+            
+            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))
+            
+            print('=============== ==============',position["devicetime"],' ## ', fecha)                                
 
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
