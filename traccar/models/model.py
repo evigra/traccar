@@ -72,7 +72,8 @@ class positions(models.Model):
             vehicle_data.devicetime     =position["devicetime"]
             vehicle_obj.write(vehicle_data)
             
-            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))
+            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(i.date_done))
+            fecha=i.date_done
             
             print('=============== ==============',position["devicetime"],' ## ', fecha)                                
 
