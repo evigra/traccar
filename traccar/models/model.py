@@ -5,7 +5,7 @@ import requests
 import random
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
-
+import pytz
 
 """
 class tc_devices(models.Model):
@@ -66,6 +66,8 @@ class positions(models.Model):
         print('=============== CREATE POSITIONS ===================',len(positions))                                
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                    
+           
+           
             
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
@@ -74,9 +76,10 @@ class positions(models.Model):
             
             fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))
             
+            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc            
             fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
             
-            print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1)                                
+            print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1,' ## ', tz)                                
 
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
