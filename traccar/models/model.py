@@ -139,3 +139,4 @@ class vehicle(models.Model):
                     datas["old"]        =devices_data[0]         
                 self.__SAVE(datas)                        
         return super(vehicle, self).write(vals)
+        
