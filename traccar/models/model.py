@@ -48,9 +48,9 @@ class positions(models.Model):
             SELECT 
 	            CASE 				            
 		            WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-		            WHEN tp.attributes::json->>'motion'='false' THEN 'deviceStopped'
-		            WHEN tp.attributes::json->>'motion'='true' THEN 'deviceOnline'
-		            ELSE 'deviceOnline'
+		            WHEN tp.attributes::json->>'motion'='false' THEN 'Stopped'
+		            WHEN tp.attributes::json->>'motion'='true' THEN 'Moving'
+		            ELSE 'Moving'
 	            END	
                 as status,            
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
@@ -65,24 +65,17 @@ class positions(models.Model):
         
         print('=============== CREATE POSITIONS ===================',len(positions))                                
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
-        for position in positions:                    
-           
-           
-            
+        for position in positions:                                       
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
+            """
+            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))            
+            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc                        
+            fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
+            """
             vehicle_data.devicetime     =position["devicetime"]
             vehicle_obj.write(vehicle_data)
             
-            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))
-            
-            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc            
-            
-            
-            fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
-            
-            print('=============== ==============',position["devicetime"],' ## ', fecha,' ## ', fecha1)                                
-
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
       
