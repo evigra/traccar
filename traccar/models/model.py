@@ -54,7 +54,7 @@ class positions(models.Model):
 	            END	
                 as event,            
                 CASE 				            
-	                WHEN td.devicetime + INTERVAL '5' MINUTE > td.servertime THEN false
+	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime THEN false
 	                ELSE true
                 END  as online,
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
