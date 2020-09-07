@@ -47,12 +47,15 @@ class positions(models.Model):
         self.env.cr.execute("""
             SELECT 
 	            CASE 				            
-		            WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
+		            WHEN tp.attributes::json->>'alarm'!='' THEN tp.attributes::json->>'alarm'
 		            WHEN tp.attributes::json->>'motion'='false' THEN 'Stopped'
-		            WHEN tp.attributes::json->>'motion'='true' THEN 'Moving'
-		            ELSE 'Moving'
-	            END	
-                as event,            
+		            WHEN tp.attributes::json->>'motion'='true' AND tp.speed>2 THEN 'Moving'
+	            END	as event,            
+                CASE 				            
+                    WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
+	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime THEN 'Offline'	                
+	                ELSE 'Online'
+                END  as status,
                 CASE 				            
 	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime THEN false
 	                ELSE true
