@@ -52,7 +52,11 @@ class positions(models.Model):
 		            WHEN tp.attributes::json->>'motion'='true' THEN 'Moving'
 		            ELSE 'Moving'
 	            END	
-                as status,            
+                as event,            
+                CASE 				            
+	                WHEN devicetime + INTERVAL '5' MINUTE > servertime THEN false
+	                ELSE true
+                END  as online,
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
                 tp.altitude,tp.speed,tp.course,tp.address,tp.attributes
             FROM tc_positions tp 
@@ -68,11 +72,6 @@ class positions(models.Model):
         for position in positions:                                       
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
-            """
-            fecha=fields.Datetime.context_timestamp(self, fields.Datetime.from_string(position["devicetime"]))            
-            tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc                        
-            fecha1=tz.localize(fields.Datetime.from_string(position["devicetime"])).astimezone(pytz.utc)
-            """
             vehicle_data.devicetime     =position["devicetime"]
             vehicle_obj.write(vehicle_data)
             
