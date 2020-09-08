@@ -50,15 +50,16 @@ class positions(models.Model):
 		            WHEN tp.attributes::json->>'alarm'!='' THEN tp.attributes::json->>'alarm'
 		            WHEN tp.attributes::json->>'motion'='false' THEN 'Stopped'
 		            WHEN tp.attributes::json->>'motion'='true' AND tp.speed>2 THEN 'Moving'
+		            ELSE 'Stopped'
 	            END	as event,            
                 CASE 				            
                     WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime THEN 'Offline'	                
-	                ELSE 'Online'
+	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN 'Online'	                
+	                ELSE 'Offline'
                 END  as status,
                 CASE 				            
-	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime THEN false
-	                ELSE true
+	                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN true
+	                ELSE false
                 END  as online,
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
                 tp.altitude,tp.speed,tp.course,tp.address,tp.attributes
@@ -68,6 +69,7 @@ class positions(models.Model):
             WHERE tp.read=0 
             ORDER BY tp.devicetime DESC 
         """)
+
         positions                   =self.env.cr.dictfetchall()
         
         print('=============== CREATE POSITIONS ===================',len(positions))                                
