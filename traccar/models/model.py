@@ -112,7 +112,7 @@ class vehicle(models.Model):
             else:
                 old                     =datas["old"]                 
                 sql="UPDATE tc_devices SET %s WHERE id='%s' " %(fields_value, old["id"] )    
-            
+            print("SQL===",sql)
             self.env.cr.execute(sql)
     @api.model                   
     def create(self,vals):
@@ -120,7 +120,7 @@ class vehicle(models.Model):
             datas                   ={}
             datas["method"]         ="create"
             datas["new"]            =vals
-            self.__SAVE(datas)
+            self.__SAVE(datas)            
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:                                
