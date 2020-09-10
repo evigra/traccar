@@ -112,7 +112,7 @@ class vehicle(models.Model):
             else:
                 old                     =datas["old"]                 
                 sql="UPDATE tc_devices SET %s WHERE id='%s' " %(fields_value, old["id"] )    
-            print("SQL===",sql)
+            #print("SQL===",sql)
             self.env.cr.execute(sql)
     @api.model                   
     def create(self,vals):
