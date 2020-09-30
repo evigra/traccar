@@ -135,5 +135,6 @@ class vehicle(models.Model):
                     datas["method"]     ="write"
                     datas["old"]        =devices_data[0]         
                 self.__SAVE(datas)                        
+        print("VEHICLE ===",datas)
         return super(vehicle, self).write(vals)
         
