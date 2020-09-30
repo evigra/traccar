@@ -125,7 +125,8 @@ class vehicle(models.Model):
             self.__SAVE(datas)            
         return super(vehicle, self).create(vals)
     def write(self,vals):
-        if len(vals)>0:                                
+        if len(vals)>0:       
+            print('==',vals) 
             if('devicetime' not in vals ):
                 datas                   ={}
                 datas["method"]         ="create"
