@@ -77,7 +77,6 @@ class positions(models.Model):
             for position in positions:                                       
                 self.create(position)
                 vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
-                print('==',vehicle_data)                                
                 if len(vehicle_data)>0:                                     
                     vehicle_data.devicetime     =position["devicetime"]
                     vehicle_obj.write(vehicle_data)
@@ -129,7 +128,7 @@ class vehicle(models.Model):
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:       
-            print('==',vals) 
+            print('vehiculo ==',vals) 
             if('devicetime' not in vals ):
                 datas                   ={}
                 datas["method"]         ="create"
@@ -141,5 +140,4 @@ class vehicle(models.Model):
                     datas["method"]     ="write"
                     datas["old"]        =devices_data[0]         
                 self.__SAVE(datas)                        
-            return super(vehicle, self).write(vals)
-        
+            return super(vehicle, self).write(vals)        
