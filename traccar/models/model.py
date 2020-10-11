@@ -1,3 +1,20 @@
+"""
+SELECT *
+FROM now(), fleet_vehicle fv 
+WHERE 1=1
+	AND phone IS NOT NULL
+  AND active is true
+  AND 
+  (	
+    devicetime is null
+  	OR 
+    (	
+      	devicetime + INTERVAL '5' MINUTE < now()
+    )
+  )
+  
+"""
+
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import datetime
@@ -40,50 +57,45 @@ class positions(models.Model):
         self.env.cr.execute("ALTER TABLE public.tc_positions ALTER COLUMN read SET DEFAULT 0;")
     #"""
     def run_scheduler_get_position2(self):
-        try:
-            vehicle_obj                             =self.env['fleet.vehicle']
-            devices                     ={}
+        vehicle_obj                             =self.env['fleet.vehicle']
+        devices                     ={}
 
-            self.env.cr.execute("""
-                SELECT 
-	                CASE 				            
-		                WHEN tp.attributes::json->>'alarm'!='' THEN tp.attributes::json->>'alarm'
-		                WHEN tp.attributes::json->>'motion'='false' THEN 'Stopped'
-		                WHEN tp.attributes::json->>'motion'='true' AND tp.speed>2 THEN 'Moving'
-		                ELSE 'Stopped'
-	                END	as event,            
-                    CASE 				            
-                        WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-	                    WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN 'Online'	                
-	                    ELSE 'Offline'
-                    END  as status,
-                    CASE 				            
-	                    WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN true
-	                    ELSE false
-                    END  as online,
-                    tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
-                    tp.altitude,tp.speed,tp.course,tp.address,tp.attributes
-                FROM tc_positions tp 
-                    JOIN tc_devices td ON tp.deviceid=td.id 
-                    JOIN fleet_vehicle fv ON fv.imei=td.uniqueid
-                WHERE tp.read=0 
-                ORDER BY tp.devicetime DESC 
-            """)
+        self.env.cr.execute("""
+            SELECT 
+                CASE 				            
+	                WHEN tp.attributes::json->>'alarm'!='' THEN tp.attributes::json->>'alarm'
+	                WHEN tp.attributes::json->>'motion'='false' THEN 'Stopped'
+	                WHEN tp.attributes::json->>'motion'='true' AND tp.speed>2 THEN 'Moving'
+	                ELSE 'Stopped'
+                END	as event,            
+                CASE 				            
+                    WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
+                    WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN 'Online'	                
+                    ELSE 'Offline'
+                END  as status,
+                CASE 				            
+                    WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN true
+                    ELSE false
+                END  as online,
+                tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
+                tp.altitude,tp.speed,tp.course,tp.address,tp.attributes
+            FROM tc_positions tp 
+                JOIN tc_devices td ON tp.deviceid=td.id 
+                JOIN fleet_vehicle fv ON fv.imei=td.uniqueid
+            WHERE tp.read=0 
+            ORDER BY tp.devicetime DESC 
+        """)
 
-            positions                   =self.env.cr.dictfetchall()
-            
-            print('=============== CREATE POSITIONS ===================',len(positions))                                
-            self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
-            for position in positions:                                       
-                self.create(position)
-                vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
-                if len(vehicle_data)>0:                                     
-                    vehicle_data.devicetime     =position["devicetime"]
-                    vehicle_obj.write(vehicle_data)
-        except Exception:
-            print("#####################################################")                
-            print("Please install traccar")                
-            print("#####################################################")
+        positions                   =self.env.cr.dictfetchall()
+        
+        print('=============== CREATE POSITIONS ===================',len(positions))                                
+        self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
+        for position in positions:                                       
+            self.create(position)
+            vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
+            if len(vehicle_data)>0:                                     
+                vehicle_data.devicetime     =position["devicetime"]
+                vehicle_obj.write(vehicle_data)
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
       
@@ -128,7 +140,6 @@ class vehicle(models.Model):
         return super(vehicle, self).create(vals)
     def write(self,vals):
         if len(vals)>0:       
-            print('vehiculo ==',vals) 
             if('devicetime' not in vals ):
                 datas                   ={}
                 datas["method"]         ="create"
