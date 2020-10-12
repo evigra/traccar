@@ -101,6 +101,7 @@ class positions(models.Model):
       
 class vehicle(models.Model):
     _inherit = "fleet.vehicle"    
+    recargado                                   = fields.Datetime('Recargado')
     
     def __SAVE(self,datas):           
         vals                            =datas["new"]
