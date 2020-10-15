@@ -87,7 +87,6 @@ class positions(models.Model):
         """)
 
         positions                   =self.env.cr.dictfetchall()
-        print('=============== CREATE POSITIONS ===================')                                
         #print('=============== CREATE POSITIONS ===================', len(positions))                                
         self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                                       
