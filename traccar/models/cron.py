@@ -49,16 +49,17 @@ try:
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
 
-
-
     
     PostgreSQL_select_Query = """
-            SELECT    count(*)
-            FROM gpsmap_positions 
-    """
+        UPDATE           
+	        tc_devices td  JOIN 
+	        fleet_vehicle fv ON fv.imei=td.uniqueid
+        SET 
+	        fv.positionid=td.positionid            
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
+    """
     positions = cursor.fetchall()
     for position in positions:                                       
         print("GPSMAP")
