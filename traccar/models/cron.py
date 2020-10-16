@@ -43,15 +43,11 @@ try:
 
 
 
-
-
     PostgreSQL_select_Query = """
         UPDATE tc_positions SET read=1 WHERE read=0
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
-
-
 
 
 
