@@ -1,11 +1,11 @@
 import psycopg2
 
 try:
-    connection = psycopg2.connect(user="",
-                                  password="",
-                                  host="",
+    connection = psycopg2.connect(user="admin_evigra",
+                                  password="EvG30JiC06",
+                                  host="odoo.solesgps.com",
                                   port="5432",
-                                  database="")
+                                  database="developer")
 
     PostgreSQL_select_Query = """
         INSERT INTO gpsmap_positions (
