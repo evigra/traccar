@@ -27,7 +27,7 @@ try:
                 ELSE 'Stopped'
             END	as event,1,
             CASE 				            
-                WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN true
+                WHEN tp.devicetime + INTERVAL '8' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '8' MINUTE < tp.servertime THEN true
                 ELSE false
             END  as online,
             tp.servertime
