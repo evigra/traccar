@@ -38,20 +38,28 @@ try:
         WHERE tp.read=0 
         ORDER BY tp.devicetime DESC 
     """
-
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
-    """
-    positions = cursor.fetchall()
-    for position in positions:                                       
-        print("POSITIONS")
-        print(position)
-    """
+
+
+
 
 
     PostgreSQL_select_Query = """
+        UPDATE tc_positions SET read=1 WHERE read=0
+    """
+    cursor = connection.cursor()
+    cursor.execute(PostgreSQL_select_Query)
+
+
+
+
+
+    
+    PostgreSQL_select_Query = """
             SELECT    count(*)
             FROM gpsmap_positions 
+    """
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
@@ -59,7 +67,7 @@ try:
     for position in positions:                                       
         print("GPSMAP")
         print(position)
-
+    """
 
         
 except (Exception, psycopg2.Error) as error :
