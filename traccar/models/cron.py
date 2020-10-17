@@ -6,7 +6,7 @@ try:
                                   password="EvG30JiC06",
                                   host="odoo.solesgps.com",
                                   port="5432",
-                                  database="developer")
+                                  database="produccion")
     print("Conectado!! ")
     print("Buscando positions")
     PostgreSQL_select_Query = """
