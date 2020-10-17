@@ -1,12 +1,14 @@
 import psycopg2
 
 try:
+    print("Conectando")
     connection = psycopg2.connect(user="admin_evigra",
                                   password="EvG30JiC06",
                                   host="odoo.solesgps.com",
                                   port="5432",
                                   database="developer")
-
+    print("Conectado!! ")
+    print("Buscando positions")
     PostgreSQL_select_Query = """
         INSERT INTO gpsmap_positions (
             protocol,deviceid,servertime,devicetime,fixtime,valid,latitude,longitude,altitude,speed,course,address,attributes,status,leido,
@@ -40,9 +42,9 @@ try:
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
+    print("Positions insertadas !!")
 
-
-
+    print("Modificando Positions")
     PostgreSQL_select_Query = """
         UPDATE tc_positions SET read=1 WHERE read=0
     """
@@ -62,6 +64,8 @@ try:
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
+    
+    print("Modificando position del Vehiculo")
     """
     positions = cursor.fetchall()
     for position in positions:                                       
