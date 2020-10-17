@@ -51,11 +51,14 @@ try:
 
     
     PostgreSQL_select_Query = """
-        UPDATE           
-	        tc_devices td  JOIN 
-	        fleet_vehicle fv ON fv.imei=td.uniqueid
-        SET 
-	        fv.positionid=td.positionid            
+        UPDATE fleet_vehicle SET positionid= gp.id
+        FROM gpsmap_positions gp
+        WHERE concat(gp.deviceid,gp.devicetime) IN 
+        (
+          SELECT  concat(deviceid, MAX(devicetime)) FROM gpsmap_positions
+          where devicetime>=NOW()::date
+          GROUP BY deviceid
+        )    
     """
     cursor = connection.cursor()
     cursor.execute(PostgreSQL_select_Query)
