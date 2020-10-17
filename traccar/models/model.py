@@ -70,11 +70,11 @@ class positions(models.Model):
                 END	as event,            
                 CASE 				            
                     WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-                    WHEN tp.devicetime + INTERVAL '8' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '8' MINUTE < tp.servertime THEN 'Online'	                
+                    WHEN tp.devicetime + INTERVAL '10' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '10' MINUTE < tp.servertime THEN 'Online'	                
                     ELSE 'Offline'
                 END  as status,
                 CASE 				            
-                    WHEN tp.devicetime + INTERVAL '5' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '5' MINUTE < tp.servertime THEN true
+                    WHEN tp.devicetime + INTERVAL '10' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '10' MINUTE < tp.servertime THEN true
                     ELSE false
                 END  as online,
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
