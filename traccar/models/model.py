@@ -88,13 +88,14 @@ class positions(models.Model):
 
         positions                   =self.env.cr.dictfetchall()
         #print('=============== CREATE POSITIONS ===================', len(positions))                                
-        self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
+        #self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
         for position in positions:                                       
             self.create(position)
             vehicle_data                =vehicle_obj.browse(position["deviceid"])                       
             if len(vehicle_data)>0:                                     
                 vehicle_data.devicetime     =position["devicetime"]
                 vehicle_obj.write(vehicle_data)
+        self.env.cr.execute("UPDATE tc_positions SET read=1 WHERE read=0")        
     def run_scheduler_table_lock(self):
         self.env.cr.execute("DELETE FROM databasechangeloglock")
       
