@@ -44,7 +44,17 @@ class tc_devices(models.Model):
         vals                        =self.__SAVE(vals)
         return super(tc_devices, self).write(vals)
 """
-
+class tc_devices(models.Model):
+    _name = "tc_devices"
+    _description = 'traccar devices'
+    _order = "name DESC"
+    _pointOnVertex=""
+        
+    name                                        = fields.Char('Protocolo', size=128)
+    uniqueid                                    = fields.Char('Protocolo', size=128)
+    lastupdate                                  = fields.Datetime('lastupdate')
+    positionid                                  = fields.Many2one('tc_positions',ondelete='set null', string="Vehiculo", index=True)
+    
 
 class tc_positions(models.Model):
     _name = "tc_positions"
@@ -52,7 +62,7 @@ class tc_positions(models.Model):
     _order = "devicetime DESC"
     _pointOnVertex=""
     protocol                                    = fields.Char('Protocolo', size=15)
-    deviceid                                    = fields.Many2one('fleet.vehicle',ondelete='set null', string="Vehiculo", index=True)
+    deviceid                                    = fields.Many2one('tc_devices',ondelete='set null', string="Vehiculo", index=True)
     servertime                                  = fields.Datetime('Server Time')
     devicetime                                  = fields.Datetime('Device Time')
     fixtime                                     = fields.Datetime('Error Time')
@@ -67,12 +77,6 @@ class tc_positions(models.Model):
     accuracy                                    = fields.Float('Curso',digits=(3,2))
     network                                      = fields.Char('Type', size=4000)
     read                                       = fields.Integer('Leido',default=0)
-
-
-
-
-
-
 
 
 
