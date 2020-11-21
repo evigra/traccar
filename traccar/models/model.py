@@ -46,6 +46,37 @@ class tc_devices(models.Model):
 """
 
 
+class tc_positions(models.Model):
+    _name = "tc_positions"
+    _description = 'traccar Positions'
+    _order = "devicetime DESC"
+    _pointOnVertex=""
+    protocol                                    = fields.Char('Protocolo', size=15)
+    deviceid                                    = fields.Many2one('fleet.vehicle',ondelete='set null', string="Vehiculo", index=True)
+    servertime                                  = fields.Datetime('Server Time')
+    devicetime                                  = fields.Datetime('Device Time')
+    fixtime                                     = fields.Datetime('Error Time')
+    valid                                       = fields.Integer('Valido')
+    latitude                                    = fields.Float('Latitud',digits=(5,10))
+    longitude                                   = fields.Float('Longitud',digits=(5,10))
+    altitude                                    = fields.Float('Altura',digits=(6,2))
+    speed                                       = fields.Float('Velocidad',digits=(3,2))
+    course                                      = fields.Float('Curso',digits=(3,2))
+    address                                     = fields.Char('Calle', size=150)
+    attributes                                  = fields.Char('Atributos', size=5000)
+    accuracy                                    = fields.Float('Curso',digits=(3,2))
+    network                                      = fields.Char('Type', size=4000)
+    read                                       = fields.Integer('Leido',default=0)
+
+
+
+
+
+
+
+
+
+
 
 class positions(models.Model):
     _inherit = "gpsmap.positions"
@@ -70,11 +101,11 @@ class positions(models.Model):
                 END	as event,            
                 CASE 				            
                     WHEN tp.attributes::json->>'alarm'!='' THEN 'alarm'
-                    WHEN tp.devicetime + INTERVAL '10' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '10' MINUTE < tp.servertime THEN 'Online'	                
+                    WHEN tp.devicetime + INTERVAL '15' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '15' MINUTE < tp.servertime THEN 'Online'	                
                     ELSE 'Offline'
                 END  as status,
                 CASE 				            
-                    WHEN tp.devicetime + INTERVAL '10' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '10' MINUTE < tp.servertime THEN true
+                    WHEN tp.devicetime + INTERVAL '15' MINUTE > tp.servertime AND tp.devicetime - INTERVAL '15' MINUTE < tp.servertime THEN true
                     ELSE false
                 END  as online,
                 tp.protocol,fv.id as deviceid,tp.servertime,tp.devicetime,tp.fixtime,tp.valid,tp.latitude,tp.longitude,
